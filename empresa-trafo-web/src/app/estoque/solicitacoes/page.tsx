@@ -1,7 +1,22 @@
 "use client";
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useEffectEvent, useState } from "react";
+import Header from '../../../components/Header';
 
 export default function SolicitacoesInternasPage() {
+  const router = useRouter();
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      router.push('/login'); // se não estiver logado, vai para login
+    }
+  }, [router]);
+
+
+
+
+
   const [mostrarFormulario, setMostrarFormulario] = useState(false);
   const [mostrarCheckin, setMostrarCheckin] = useState<null | number>(null);
   const [detalheAberto, setDetalheAberto] = useState<null | number>(null);
@@ -112,14 +127,14 @@ export default function SolicitacoesInternasPage() {
       prev.map((s) =>
         s.id === id
           ? {
-              ...s,
-              status: "concluida",
-              itens: s.itens.map((i) => ({
-                ...i,
-                entregue:
-                  checkinItens.find((ci) => ci.codigo === i.codigo)?.entregue || i.entregue,
-              })),
-            }
+            ...s,
+            status: "concluida",
+            itens: s.itens.map((i) => ({
+              ...i,
+              entregue:
+                checkinItens.find((ci) => ci.codigo === i.codigo)?.entregue || i.entregue,
+            })),
+          }
           : s
       )
     );
@@ -146,6 +161,8 @@ export default function SolicitacoesInternasPage() {
 
   return (
     <div className="p-6 text-neutral-100 relative">
+      <Header title="Dashboard" />
+
       {/* Cabeçalho */}
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-semibold">Solicitações Internas de Materiais</h1>
@@ -209,9 +226,8 @@ export default function SolicitacoesInternasPage() {
                     <td className="py-2 align-middle">{s.lote}</td>
                     <td className="py-2 align-middle">{s.relacaoOrdemProducao}</td>
                     <td
-                      className={`py-2 align-middle font-medium ${
-                        s.status === "pendente" ? "text-yellow-400" : "text-green-400"
-                      }`}
+                      className={`py-2 align-middle font-medium ${s.status === "pendente" ? "text-yellow-400" : "text-green-400"
+                        }`}
                     >
                       {s.status === "pendente" ? "Pendente" : "Concluída"}
                     </td>
@@ -300,9 +316,8 @@ export default function SolicitacoesInternasPage() {
                 <strong>Ordem Prod.:</strong> {s.relacaoOrdemProducao}
               </p>
               <p
-                className={`text-sm mt-2 font-medium ${
-                  s.status === "pendente" ? "text-yellow-400" : "text-green-400"
-                }`}
+                className={`text-sm mt-2 font-medium ${s.status === "pendente" ? "text-yellow-400" : "text-green-400"
+                  }`}
               >
                 {s.status === "pendente" ? "Pendente" : "Concluída"}
               </p>

@@ -1,81 +1,63 @@
-'use client'; 
-// Indica que este componente será renderizado no lado do cliente (Client Component) no Next.js 13+
+'use client';
 
-import { useRouter } from 'next/navigation'; 
-// Hook do Next.js usado para navegação programática entre páginas
-
-import { useState } from 'react'; 
-// Hook do React para gerenciar estados locais (ex: email e senha)
-
-import useStore from '../../lib/useStore'; 
-// Hook personalizado (provavelmente usando Zustand) para acessar e atualizar o estado global da aplicação
+import { useRouter } from 'next/navigation';
+import { useState, useEffect } from 'react';
 
 export default function LoginPage() {
-  const router = useRouter(); 
-  // Inicializa o roteador para permitir redirecionamento após o login
+  const router = useRouter();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
-  const setUser = useStore(state => state.setUser); 
-  // Obtém a função setUser do estado global, usada para armazenar o usuário logado
-
-  const [email, setEmail] = useState('admin@trafo.com'); 
-  // Estado local que armazena o valor do campo de email (valor padrão: admin@trafo.com)
-
-  const [password, setPassword] = useState('password'); 
-  // Estado local que armazena o valor do campo de senha (valor padrão: password)
+  // Se já estiver logado, vai direto para dashboard
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      router.push('/src/page');
+    }
+  }, [router]);
 
   function handleLogin(e: React.FormEvent) {
-    e.preventDefault(); 
-    // Impede o comportamento padrão do formulário (recarregar a página)
+    e.preventDefault();
 
-    // mock login: aceita qualquer credencial e define o usuário atual
-    setUser({ 
-      id: 'u-1', 
-      name: 'Admin Trafo', 
-      email, 
-      profile: { id: 'p-admin', name: 'Admin' }
-    });
-
-    router.push('/dashboard'); 
-    // Redireciona o usuário para a página de dashboard após o "login"
+    // Simula login bem-sucedido
+    if (email === '' && password === '') {
+      localStorage.setItem('token', 'meu-token-de-exemplo'); // salva token
+      router.push('/src/page'); // vai para /dashboard
+    } else {
+      alert('Credenciais inválidas');
+    }
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4">
-      {/* Contêiner principal que centraliza o formulário na tela */}
-      
-      <form 
-        onSubmit={handleLogin} 
-        className="w-full max-w-md bg-panel p-6 rounded-2xl card-shadow"
+    <div className="min-h-screen flex items-center justify-center bg-neutral-900 text-neutral-100 p-4">
+      <form
+        onSubmit={handleLogin}
+        className="bg-neutral-800 p-8 rounded-2xl shadow-xl w-full max-w-sm flex flex-col"
       >
-        {/* Formulário de login com estilização básica */}
-        
-        <h2 className="text-xl font-semibold mb-4">Entrar</h2>
-        {/* Título do formulário */}
-        
-        <label className="block mb-2 text-sm text-muted">Email</label>
-        <input 
-          value={email} 
-          onChange={e => setEmail(e.target.value)} 
-          className="w-full mb-3 px-3 py-2 rounded bg-bg border border-gray-700" 
+        <h1 className="text-3xl font-bold mb-6 text-center">Login</h1>
+
+        <input
+          type="email"
+          placeholder="E-mail"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          className="w-full p-3 mb-4 rounded-lg bg-neutral-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
         />
-        {/* Campo de entrada de email controlado pelo estado */}
-        
-        <label className="block mb-2 text-sm text-muted">Senha</label>
-        <input 
-          type="password" 
-          value={password} 
-          onChange={e => setPassword(e.target.value)} 
-          className="w-full mb-4 px-3 py-2 rounded bg-bg border border-gray-700" 
+
+        <input
+          type="password"
+          placeholder="Senha"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          className="w-full p-3 mb-6 rounded-lg bg-neutral-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
         />
-        {/* Campo de entrada de senha controlado pelo estado */}
-        
-        <button 
-          type="submit" 
-          className="w-full py-2 bg-indigo-600 rounded"
+
+        <button
+          type="submit"
+          className="w-full bg-indigo-600 hover:bg-indigo-500 p-3 rounded-lg font-semibold transition"
         >
           Entrar
         </button>
-        {/* Botão que aciona o handleLogin ao enviar o formulário */}
       </form>
     </div>
   );

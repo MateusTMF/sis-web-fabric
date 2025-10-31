@@ -4,7 +4,19 @@ import { useRouter } from 'next/navigation';
 
 export default function Header({ title }: { title: string }) {
   const user = useStore((s) => s.user);
+  const setUser = useStore((s) => s.setUser); // função para limpar usuário no store
   const router = useRouter();
+
+  const handleLogout = () => {
+    // Limpa o usuário do store
+    setUser(null);
+
+    // Remove token do localStorage, se houver
+    localStorage.removeItem('token');
+
+    // Redireciona para login
+    router.push('/login');
+  };
 
   return (
     <header className="flex items-center justify-between border-b border-border pb-3">
@@ -18,10 +30,7 @@ export default function Header({ title }: { title: string }) {
           Olá, {user?.name ?? 'Visitante'}
         </div>
 
-        <button
-          className="btn-secondary"
-          onClick={() => router.push('/login')}
-        >
+        <button className="btn-secondary" onClick={handleLogout}>
           Logout
         </button>
       </div>

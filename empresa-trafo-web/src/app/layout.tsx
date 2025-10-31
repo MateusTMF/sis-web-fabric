@@ -1,6 +1,8 @@
 import './globals.css';
 import { ReactNode } from 'react';
 import Sidebar from '../components/Sidebar';
+import { redirect } from 'next/navigation';
+
 
 export const metadata = {
   title: 'Empresa Trafo',
@@ -15,5 +17,6 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <main className="flex-1 p-6 overflow-y-auto">{children}</main>
       </body>
     </html>
+    
   );
 }

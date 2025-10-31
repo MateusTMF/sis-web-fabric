@@ -1,10 +1,22 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import Header from '../../../components/Header';
 
 export default function AlertasReposicaoPage() {
   const router = useRouter();
+
+
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      router.push('/login'); // se não estiver logado, vai para login
+    }
+  }, [router]);
+
+
 
   const [alertasPendentes, setAlertasPendentes] = useState([
     { codigo: "MP-004", descricao: "Tinta Epóxi Azul", saldo: 3, minimo: 10 },
@@ -74,7 +86,9 @@ export default function AlertasReposicaoPage() {
   };
 
   return (
+    
     <div className="p-6 text-neutral-100 space-y-8">
+      <Header title="Dashboard" />
       <h1 className="text-2xl font-semibold">Alertas de Reposição</h1>
 
       {/* Pendentes */}

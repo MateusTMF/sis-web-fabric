@@ -1,7 +1,20 @@
 "use client";
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import Header from '../../../components/Header';
 
 export default function MateriasPrimasPage() {
+  const router = useRouter();
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      router.push('/login'); // se não estiver logado, vai para login
+    }
+  }, [router]);
+
+
+
   const [form, setForm] = useState({
     codigo: "",
     descricao: "",
@@ -19,6 +32,8 @@ export default function MateriasPrimasPage() {
 
   return (
     <div className="p-6 text-neutral-100">
+      <Header title="Dashboard" />
+
       <h1 className="text-2xl font-semibold mb-6">Cadastro de Matérias-Primas e Insumos</h1>
 
       <form className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 bg-neutral-900 p-6 rounded-xl border border-neutral-700">

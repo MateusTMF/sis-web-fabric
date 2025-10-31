@@ -1,5 +1,8 @@
 "use client";
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import Header from '../../../components/Header';
+
 
 interface Item {
   codigo: string;
@@ -10,6 +13,19 @@ interface Item {
 }
 
 export default function ControleEstoquePage() {
+  const router = useRouter();
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      router.push('/login'); // se não estiver logado, vai para login
+    }
+  }, [router]);
+
+
+
+
+
   const [itens] = useState<Item[]>([
     { codigo: "MP-001", descricao: "Aço Inox 304", saldo: 120, unidade: "kg", localizacao: "A1" },
     { codigo: "MP-002", descricao: "Fita de Cobre 10mm", saldo: 45, unidade: "m", localizacao: "B2" },
@@ -54,6 +70,7 @@ export default function ControleEstoquePage() {
 
   return (
     <div className="p-6 text-neutral-100">
+      <Header title="Dashboard" />
       <h1 className="text-2xl font-semibold mb-6">Controle de Estoque</h1>
 
       {/* 🔍 Barra de Pesquisa */}
