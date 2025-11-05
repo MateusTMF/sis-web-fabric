@@ -1,4 +1,3 @@
-import Sidebar from "@/components/sidebar"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Download, TrendingUp } from "lucide-react"
@@ -15,6 +14,7 @@ import {
   ResponsiveContainer,
   Legend,
 } from "recharts"
+import Sidebar from "@/components/sidebar"
 
 const revenueExpenses = [
   { month: "Jul", receita: 45000, despesa: 38000 },
