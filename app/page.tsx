@@ -1,8 +1,9 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import SystemInfo from "./components/system-info"
-import Sidebar from "./components/sidebar"
+import Sidebar from "../components/sidebar"
+import SystemInfo from "../components/system-info"
+
 export default function Home() {
   const [isMobile, setIsMobile] = useState(false)
 
