@@ -64,15 +64,24 @@ export default function Sidebar() {
       href: "/producao",
       icon: Factory,
       submenu: [
+      { label: "Dashboard", href: "/producao" },
         { label: "Planejamento de Produção", href: "/producao/planejamento" },
+        { label: "Cadastro de Projetos", href: "/producao/projetos" },
+        { label: "Novo Projeto", href: "/producao/projetos/novo" },
         { label: "Ordens de Produção (OP)", href: "/producao/ordens-producao" },
+        { label: "Criar Ordem de Produção", href: "/producao/ordens-producao/criar" },
+
+        // Setores
+        { label: "Núcleo", href: "/producao/nucleo" },
+        { label: "Alta Tensão", href: "/producao/alta-tensao" },
+        { label: "Baixa Tensão", href: "/producao/baixa-tensao" },
+        { label: "Elétrica", href: "/producao/eletrica" },
+        { label: "Laboratório", href: "/producao/laboratorio" },
+        { label: "Pintura", href: "/producao/pintura" },
+        { label: "Montagem Final", href: "/producao/montagem-final" },
+
+        // Processos
         { label: "Controle de Processos", href: "/producao/processos" },
-        { label: "Bobinagem", href: "/producao/bobinagem" },
-        { label: "Montagem", href: "/producao/montagem" },
-        { label: "Testes", href: "/producao/testes" },
-        { label: "Eficiência e Histórico", href: "/producao/eficiencia" },
-        { label: "Refugos e Perdas", href: "/producao/refugos" },
-        { label: "Integração com Estoque e Compras", href: "/producao/integracao" },
       ],
     },
     {

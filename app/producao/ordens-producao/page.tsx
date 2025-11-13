@@ -8,24 +8,22 @@ import { Input } from "@/components/ui/input"
 import { Progress } from "@/components/ui/progress"
 import { PlayCircle, PauseCircle, CheckCircle2, Clock, Plus, Search, Filter, Eye, Edit, Trash2 } from "lucide-react"
 import Link from "next/link"
-import { OrdemProducao, ordensProducaoMock } from "@/lib/types/ordem-producao"
+import { ordensProducaoMockDetalhes } from "@/lib/types/ordem-producao-extended"
 import Sidebar from "@/components/sidebar"
 
 export default function OrdensProducaoPage() {
-  const [ordens, setOrdens] = useState<OrdemProducao[]>(ordensProducaoMock)
+  const [ordens, setOrdens] = useState(ordensProducaoMockDetalhes)
   const [busca, setBusca] = useState("")
   const [filtroStatus, setFiltroStatus] = useState<string>("todos")
 
-  // Filtrar ordens
   const ordensFiltradas = ordens.filter((ordem) => {
     const matchBusca =
       ordem.numeroOP.toLowerCase().includes(busca.toLowerCase()) ||
-      ordem.dadosGerais.projeto.toLowerCase().includes(busca.toLowerCase())
+      ordem.projeto.nome.toLowerCase().includes(busca.toLowerCase())
     const matchStatus = filtroStatus === "todos" || ordem.status === filtroStatus
     return matchBusca && matchStatus
   })
 
-  // Calcular estatísticas
   const stats = {
     emProducao: ordens.filter((o) => o.status === "em-producao").length,
     aguardando: ordens.filter((o) => o.status === "aguardando").length,
@@ -102,7 +100,7 @@ export default function OrdensProducaoPage() {
 
   return (
     <div className="min-h-screen bg-background p-12">
-            <Sidebar />
+      <Sidebar />
       <div className="mx-auto max-w-7xl space-y-6">
         {/* Cabeçalho */}
         <div className="flex items-center justify-between">
@@ -110,12 +108,20 @@ export default function OrdensProducaoPage() {
             <h1 className="text-3xl font-bold tracking-tight">Ordens de Produção</h1>
             <p className="text-muted-foreground">Gerencie as ordens de produção de transformadores</p>
           </div>
-          <Link href="/producao/ordens-producao/cadastrar">
-            <Button size="lg">
-              <Plus className="mr-2 h-5 w-5" />
-              Nova Ordem
-            </Button>
-          </Link>
+          <div className="flex gap-2">
+            <Link href="/producao/projetos">
+              <Button variant="outline">
+                <Search className="mr-2 h-5 w-5" />
+                Ver Projetos
+              </Button>
+            </Link>
+            <Link href="/producao/ordens-producao/criar">
+              <Button size="lg">
+                <Plus className="mr-2 h-5 w-5" />
+                Nova Ordem
+              </Button>
+            </Link>
+          </div>
         </div>
 
         {/* Cards de Estatísticas */}
@@ -225,7 +231,7 @@ export default function OrdensProducaoPage() {
                       <Badge variant={getPrioridadeColor(ordem.prioridade)}>{ordem.prioridade.toUpperCase()}</Badge>
                     </div>
                     <CardDescription>
-                      Transformador {ordem.dadosGerais.potencia} kVA - {ordem.dadosGerais.classe} kV
+                      {ordem.projeto.nome} - {ordem.projeto.potencia} kVA - {ordem.projeto.classe} kV
                     </CardDescription>
                   </div>
                   <div className="flex gap-2">
@@ -250,21 +256,13 @@ export default function OrdensProducaoPage() {
                 <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
                   <div>
                     <p className="text-sm font-medium text-muted-foreground">Produto</p>
-                    <p className="text-sm font-semibold">{ordem.dadosGerais.tipoTransformador}</p>
+                    <p className="text-sm font-semibold">{ordem.projeto.tipoTransformador}</p>
                   </div>
                   <div>
                     <p className="text-sm font-medium text-muted-foreground">AT / BT</p>
                     <p className="text-sm font-semibold">
-                      {ordem.dadosEletricos.tensaoNominalAT}V / {ordem.dadosEletricos.tensaoNominalBT}V
+                      {ordem.projeto.tensaoATPrimaria}V / {ordem.projeto.tensaoBT}V
                     </p>
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium text-muted-foreground">Operador</p>
-                    <p className="text-sm font-semibold">{ordem.operador || "-"}</p>
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium text-muted-foreground">Máquina</p>
-                    <p className="text-sm font-semibold">{ordem.maquina || "-"}</p>
                   </div>
                 </div>
 
