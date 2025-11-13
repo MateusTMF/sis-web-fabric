@@ -65,7 +65,7 @@ export default function Sidebar() {
       icon: Factory,
       submenu: [
         { label: "Planejamento de Produção", href: "/producao/planejamento" },
-        { label: "Ordens de Produção (OP)", href: "/producao/ordens" },
+        { label: "Ordens de Produção (OP)", href: "/producao/ordens-producao" },
         { label: "Controle de Processos", href: "/producao/processos" },
         { label: "Bobinagem", href: "/producao/bobinagem" },
         { label: "Montagem", href: "/producao/montagem" },
